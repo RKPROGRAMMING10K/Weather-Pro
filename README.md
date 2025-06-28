@@ -1,97 +1,303 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Weather App
 
-# Getting Started
+A modern React Native weather application built with TypeScript, featuring GPS location detection, theme support, and comprehensive error handling.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🏗️ Architecture & Design Decisions
 
-## Step 1: Start Metro
+### Project Structure
+The app follows a scalable, modular architecture:
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+```
+src/
+├── components/          # Reusable UI components
+│   ├── SearchBar.tsx
+│   ├── WeatherCard.tsx
+│   ├── ForecastList.tsx
+│   ├── LoadingSpinner.tsx
+│   ├── ErrorDisplay.tsx
+│   └── Enhanced*/       # Enhanced components with better styling
+├── screens/             # Screen components
+│   ├── HomeScreen.tsx   # Main weather display with GPS
+│   └── SettingsScreen.tsx # App configuration
+├── navigation/          # Navigation configuration
+├── store/              # Redux Toolkit state management
+│   ├── weatherSlice.ts  # Weather data state
+│   └── settingsSlice.ts # User preferences
+├── services/           # Business logic services
+│   ├── weatherService.ts    # Weather API integration
+│   ├── locationService.ts   # GPS location handling
+│   └── storageService.ts    # AsyncStorage operations
+├── utils/              # Utility functions
+├── types/              # TypeScript definitions
+├── theme/              # Theme configuration
+└── __tests__/          # Unit tests
+```
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### Key Design Decisions
 
-```sh
-# Using npm
+**1. Redux Toolkit for State Management**
+- Centralized state management for weather data and user settings
+- Immutable state updates with Redux Toolkit
+- Persistent storage integration with AsyncStorage
+
+**2. Service Layer Architecture**
+- Separation of concerns between UI and business logic
+- Dedicated services for location, weather API, and storage
+- Robust error handling and fallback strategies
+
+**3. TypeScript Integration**
+- Full type safety across the application
+- Custom type definitions for weather data and navigation
+- Enhanced developer experience and runtime safety
+
+**4. Component Architecture**
+- Reusable UI components with consistent styling
+- Enhanced components for better user experience
+- Theme-aware components supporting light/dark modes
+
+**5. Location Service Strategy**
+- High-accuracy GPS with low-accuracy fallback
+- Permission handling and error recovery
+- Real device GPS support (not simulators)
+
+## 🚀 Setup and Installation Instructions
+
+### Prerequisites
+- **Node.js** >= 18
+- **React Native CLI** installed globally
+- **Android Studio** (for Android development)
+- **Xcode** (for iOS development, macOS only)
+- **Java 17** (for Android builds)
+
+### Installation Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd Weather
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Android Setup**
+   ```bash
+   # Ensure ANDROID_HOME environment variable is set
+   # Install Android SDK and build tools through Android Studio
+   ```
+
+4. **iOS Setup** (macOS only)
+   ```bash
+   cd ios && pod install && cd ..
+   ```
+
+5. **Environment Configuration**
+   ```bash
+   # Create .env file for API keys (optional for development)
+   cp .env.example .env
+   ```
+
+### Running the Application
+
+**Start Metro Bundler:**
+```bash
 npm start
-
-# OR using Yarn
-yarn start
+# or with cache reset
+npm start -- --reset-cache
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+**Run on Android:**
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
+# Ensure Android device is connected or emulator is running
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+**Run on iOS:**
+```bash
 npm run ios
-
-# OR using Yarn
-yarn ios
+# iOS Simulator will launch automatically
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Development Commands
+```bash
+npm test              # Run unit tests
+npm test -- --watch   # Run tests in watch mode
+npm test -- --coverage # Run tests with coverage report
+npm run lint          # Lint code (if configured)
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 🧪 Unit Testing Strategy
 
-## Step 3: Modify your app
+### Test Coverage for Critical Components
 
-Now that you have successfully run the app, let's make changes!
+**Current Test Suite: 38 Tests Passing**
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+#### 1. Component Tests
+- **SearchBar Component** (5 tests)
+  - Input validation and debounced search functionality
+  - Loading states and error handling
+  - User interaction testing
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+- **WeatherCard Component** (6 tests)
+  - Weather data display accuracy
+  - Temperature unit conversion
+  - Loading and error states
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+- **ForecastList Component** (4 tests)
+  - Forecast data rendering
+  - Horizontal scrolling functionality
+  - Date formatting accuracy
 
-## Congratulations! :tada:
+#### 2. Utility Function Tests
+- **Temperature Conversion** (9 tests)
+  - Celsius to Fahrenheit conversion accuracy
+  - Edge cases (negative temperatures, zero)
+  - Rounding precision validation
 
-You've successfully run and modified your React Native App. :partying_face:
+- **Helper Functions** (7 tests)
+  - City name validation
+  - Input sanitization
+  - Date formatting utilities
 
-### Now what?
+#### 3. State Management Tests
+- **Weather Slice** (7 tests)
+  - Redux action creators
+  - State mutations and immutability
+  - Loading states and error handling
+  - Async thunk behavior
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### Test Configuration
+```bash
+# Run all tests
+npm test
 
-# Troubleshooting
+# Run with coverage report
+npm test -- --coverage
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+# Run specific test files
+npm test WeatherCard.test.tsx
 
-# Learn More
+# Run tests in watch mode during development
+npm test -- --watch
+```
 
-To learn more about React Native, take a look at the following resources:
+### Test Setup
+- **Jest** framework with React Native preset
+- **React Testing Library** for component testing
+- **Mock implementations** for location services and APIs
+- **Coverage thresholds** enforced for critical paths
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## ⚠️ Error Handling & Edge Cases
+
+### Comprehensive Error Management
+
+#### 1. Location Service Error Handling
+```typescript
+// locationService.ts - Robust GPS handling
+- High-accuracy GPS with automatic fallback to low-accuracy
+- Permission denied scenarios with user-friendly messages
+- Network timeout handling (10-second timeout)
+- Fallback to default location (Nashik) when GPS fails
+- Real device vs simulator detection
+```
+
+#### 2. Weather API Error Handling
+```typescript
+// weatherService.ts - API resilience
+- Network connectivity issues
+- API rate limiting and timeout management
+- Invalid city name handling with validation
+- Malformed response data protection
+- Retry mechanisms for failed requests
+```
+
+#### 3. Storage Error Handling
+```typescript
+// storageService.ts - Data persistence safety
+- AsyncStorage read/write failures
+- JSON parsing errors for corrupted data
+- Storage quota exceeded scenarios
+- Graceful degradation when storage unavailable
+```
+
+#### 4. UI Error States
+- **Loading Spinners**: Clear feedback during operations
+- **Error Messages**: User-friendly error descriptions
+- **Retry Mechanisms**: Allow users to retry failed operations
+- **Fallback UI**: Default states when data unavailable
+- **Network Indicators**: Show offline/online status
+
+#### 5. Input Validation & Edge Cases
+```typescript
+// Handled scenarios:
+- Empty search queries
+- Special characters in city names
+- Very long input strings
+- Invalid temperature values
+- Malformed forecast data
+- Theme switching edge cases
+```
+
+### Error Recovery Strategies
+1. **Automatic Retry**: Failed network requests retry with exponential backoff
+2. **Cached Data**: Show last known good data when new requests fail
+3. **User Feedback**: Clear error messages with actionable solutions
+4. **Graceful Degradation**: App remains functional even with partial failures
+5. **Logging**: Comprehensive error logging for debugging
+
+## 🛠️ Troubleshooting
+
+### Common Development Issues
+
+#### "Unable to load script" Error
+```bash
+# Solution 1: Restart Metro with cache reset
+npx react-native start --reset-cache
+
+# Solution 2: Clean and rebuild
+rm -rf node_modules && npm install
+cd android && ./gradlew clean && cd ..
+npx react-native run-android
+```
+
+#### Android Build Issues
+```bash
+# Check Java version (should be Java 17)
+java -version
+
+# Verify Android SDK path
+echo $ANDROID_HOME
+
+# Clean Android build
+cd android && ./gradlew clean && cd ..
+```
+
+#### Location/GPS Issues
+- Ensure location permissions are granted in device settings
+- Test on real device (GPS doesn't work in emulators)
+- Check that GPS/Location services are enabled
+- Verify network connectivity
+
+#### Metro Bundler Issues
+```bash
+# Kill existing Metro processes
+npx react-native start --reset-cache
+
+# Check port 8081 availability
+lsof -ti:8081 | xargs kill -9  # Kill processes using port 8081
+```
+
+---
+
+## 📋 Project Summary
+
+This Weather App demonstrates:
+- **Robust Architecture**: Modular design with clear separation of concerns
+- **Comprehensive Testing**: 38 unit tests covering critical functionality
+- **Error Resilience**: Extensive error handling and recovery mechanisms
+- **Modern UI/UX**: Theme-aware design with GPS location integration
+- **TypeScript Safety**: Full type coverage for enhanced developer experience
+
+The application successfully handles real-world scenarios including network failures, location services, and user input validation while maintaining a smooth user experience.
